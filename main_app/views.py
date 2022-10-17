@@ -1,0 +1,31 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+# Create your views here.
+
+
+def home(request):
+    return render(request, 'home.html')
+
+
+def about(request):
+    return render(request, 'about.html')
+
+
+class Animal:  # Note that parens are optional if not inheriting from another class
+    def __init__(self, name, type, description, age):
+        self.name = name
+        self.type = type
+        self.description = description
+        self.age = age
+
+
+animals = [
+    Animal('Rhino', 'Mammal', 'big horns', 40),
+    Animal('Turtle', 'reptile', 'hides in shell', 95),
+    Animal('bass', 'fish', 'eats', 5),
+    Animal('horse', 'mammal', 'runs', 25),
+]
+
+
+def animals_index(request):
+    return render(request, 'animals/index.html', {'animals': animals})
