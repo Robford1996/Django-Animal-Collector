@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Animal
+from .forms import FeedingForm
 # Create your views here.
 
 
@@ -52,3 +53,20 @@ class AnimalUpdate(UpdateView):
 class AnimalDelete(DeleteView):
     model = Animal
     success_url = '/animals/'
+
+
+def animals_detail(request, animal_id):
+    animal = Animal.objects.get(id=animal_id)
+    feeding_form = FeedingForm()
+    return render(request, 'animals/detail.html', {
+        'animal': animal, 'feeding_form': feeding_form
+    })
+
+
+def add_feeding(request, animal_id):
+    form = FeedingForm(request.POST)
+    if form.is_valid():
+        new_feeding = form.save(commit=False)
+        new_feeding.animal_id = animal_id
+        new_feeding.save()
+    return redirect('detail', animal_id=animal_id)
