@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Animal
 # Create your views here.
 
@@ -36,3 +36,19 @@ def animals_index(request):
 def animals_detail(request, animal_id):
     animal = Animal.objects.get(id=animal_id)
     return render(request, 'animals/detail.html', {'animal': animal})
+
+
+class AnimalCreate(CreateView):
+    model = Animal
+    fields = '__all__'
+    success_url = '/animals/'
+
+
+class AnimalUpdate(UpdateView):
+    model = Animal
+    fields = ['type', 'description', 'age']
+
+
+class AnimalDelete(DeleteView):
+    model = Animal
+    success_url = '/animals/'
