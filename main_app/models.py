@@ -10,11 +10,21 @@ MEALS = (
 )
 
 
+class Toy(models.Model):
+    name = models.CharField(max_length=50)
+    color = models.CharField(max_length=50)
+
+
+def get_absolute_url(self):
+    return reverse('toys_detail', kwargs={'pk': self.id})
+
+
 class Animal(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     age = models.IntegerField()
+    toys = models.ManyToManyField(Toy)
 
     def __str__(self):
         return self.name

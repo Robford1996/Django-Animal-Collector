@@ -42,6 +42,53 @@
     </table>
 </div>
 </div>
+
+<!-- This is all new markup to be added just above the <script> tag -->
+    <hr />
+    <div class="row">
+    
+        <div class="col s6">
+            <h3>{{ animal.name }}'s Toys</h3>
+            {% if animal.toys.count %} {% for toy in animal.toys.all %}
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">
+                        A <span class="color: {{ toy.color.lower }}-text">
+                            {{ toy.color }}</span> {{ toy.name }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %} {% else %}
+            <h5>No Toys :(</h5>
+            {% endif %}
+        </div>
+    
+    
+        <!-- Available toys will come after this line -->
+        <div class="col s6">
+            <h3>Available Toys</h3>
+            {% if toys.count %}
+            {% for toy in toys.all %}
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">
+                        A <span class="{{ toy.color }}-text">{{ toy.color }}</span> {{ toy.name }}
+                    </span>
+                </div>
+                <div class="card-action">
+                    <form action="{% url 'assoc_toy' animal.id toy.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">Add</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h5>{{animal.name}} Already Has All Toys Available</h5>
+            {% endif %}
+        </div>
+    </div>
+    
 <script>  
 var dateEl = document.getElementById('id_date');
     M.Datepicker.init(dateEl, {
