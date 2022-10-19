@@ -1,12 +1,10 @@
 from django.db import models
 from django.urls import reverse
 
-# Create your models here.
-
 MEALS = (
     ('B', 'Breakfast'),
     ('L', 'Lunch'),
-    ('D', 'Dinner')
+    ('D', 'Dinner'),
 )
 
 
@@ -14,9 +12,8 @@ class Toy(models.Model):
     name = models.CharField(max_length=50)
     color = models.CharField(max_length=50)
 
-
-def get_absolute_url(self):
-    return reverse('toys_detail', kwargs={'pk': self.id})
+    def get_absolute_url(self):
+        return reverse('toys_detail', kwargs={'pk': self.id})
 
 
 class Animal(models.Model):
@@ -26,6 +23,7 @@ class Animal(models.Model):
     age = models.IntegerField()
     toys = models.ManyToManyField(Toy)
 
+    # changes to instance methods do not require re-generation / running of migrations
     def __str__(self):
         return self.name
 
@@ -34,12 +32,18 @@ class Animal(models.Model):
 
 
 class Feeding(models.Model):
-    date = models.DateField('feeding date')
-    meal = models.CharField(max_length=1, choices=MEALS, default=MEALS[0][0])
+    date = models.DateField('Feeding Date')
+    meal = models.CharField(
+        max_length=1,
+        choices=MEALS,
+        default=MEALS[0][0]
+    )
+
     animal = models.ForeignKey(Animal, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.get_meal_display()} on {self.date}"
 
+    # change the default sort
     class Meta:
         ordering = ['-date']
